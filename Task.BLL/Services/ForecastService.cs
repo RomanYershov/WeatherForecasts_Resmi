@@ -58,7 +58,7 @@ namespace Task.BLL.Services
             return data;
         }
 
-        private int GetCelsiumByForengeyt(int f)
+        private int ConvertGetCelsiusToForengeyt(int f)
         {
             var c = (f - 32) * 5 / 9;
             return c;
@@ -75,13 +75,12 @@ namespace Task.BLL.Services
         }
         private int GetDegreeFromJson()
         {
-            string value = "0";
-            var stringData = GetStringFromAPI("SUbAqLoPglknQ60E9TDwd3gTtGUdMUWZ");
+            var stringData = GetStringFromAPI("zpgwT838A140y38YpeguHHToGCfRVfxC");
             var definition = new { DailyForecasts = new[] { new { Temperature = new { Minimum = new { Value = "" } } } } };
             var obj = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(stringData, definition);
-            value = obj.DailyForecasts[1].Temperature.Minimum.Value;
+            string value = obj.DailyForecasts[1].Temperature.Minimum.Value;
             var resStr = value.Split('.')[0];
-            return GetCelsiumByForengeyt(int.Parse(resStr));
+            return ConvertGetCelsiusToForengeyt(int.Parse(resStr));
         }
     }
 }
