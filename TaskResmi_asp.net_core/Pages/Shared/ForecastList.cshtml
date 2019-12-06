@@ -1,0 +1,35 @@
+﻿
+@model List<global::Task.BLL.Models.ForecastModel>
+
+
+
+<div class="container">
+    <div class="alert alert-heading" style="text-align: center">
+        <h2>Результаты предсказаний на @DateTime.Now.AddDays(1).ToShortDateString()</h2>
+    </div>
+    <div class="alert alert-dark" style="text-align: center">
+        <h3 class="text-info">Ожидаемая темпеатура воздуха @ViewData["degree"] °C</h3>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>№</td>
+                <td>Имя</td>
+                <td>Температура</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 0;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(++i)</td>
+                        <td>@item.PlayerName</td>
+                        <td>@item.Degree</td></tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
