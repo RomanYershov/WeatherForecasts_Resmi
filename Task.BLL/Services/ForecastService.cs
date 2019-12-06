@@ -58,7 +58,7 @@ namespace Task.BLL.Services
             return data;
         }
 
-        private int ConvertGetCelsiusToForengeyt(int f)
+        private int ConvertCelsiusToForengeyt(int f)
         {
             var c = (f - 32) * 5 / 9;
             return c;
@@ -80,7 +80,7 @@ namespace Task.BLL.Services
             var obj = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(stringData, definition);
             string value = obj.DailyForecasts[1].Temperature.Minimum.Value;
             var resStr = value.Split('.')[0];
-            return ConvertGetCelsiusToForengeyt(int.Parse(resStr));
+            return ConvertCelsiusToForengeyt(int.Parse(resStr));
         }
     }
 }
