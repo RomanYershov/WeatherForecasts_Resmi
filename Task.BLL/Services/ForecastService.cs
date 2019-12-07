@@ -11,7 +11,7 @@ namespace Task.BLL.Services
 {
     public class ForecastService : IForecastService
     {
-        public int Degree { get; }
+        public int Temperature { get; }
         private const string Url =
             "http://dataservice.accuweather.com/forecasts/v1/daily/5day/222191?apikey=";
         private readonly ApplicationDbContext _dbContext;
@@ -19,7 +19,7 @@ namespace Task.BLL.Services
         public ForecastService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            Degree = GetDegreeFromJson();
+            Temperature = GetTemperatureFromJson();
         }
 
         public void Add(ForecastModel model)
@@ -47,18 +47,19 @@ namespace Task.BLL.Services
             var result = GetListResults(forecasts.ToArray());
             return result;
         }
-
+         
 
 
       
         private IEnumerable<ForecastModel> GetListResults(ForecastModel[] data)
         {
-            var comparer = new ForecastComparer(Degree);
-            Array.Sort(data, comparer);
-            return data;
+            var compare = new ForecastComparer(Temperature);    
+            Array.Sort(data, compare);
+            var resSortListByDate = data.GroupBy(x => x.Degree).SelectMany(x => x.OrderBy(z => z.DateTime));
+            return resSortListByDate;   
         }
 
-        private int ConvertCelsiusToForengeyt(int f)
+        private int ConvertForengeytToCelsius(int f)
         {
             var c = (f - 32) * 5 / 9;
             return c;
@@ -73,14 +74,17 @@ namespace Task.BLL.Services
             }
             return value;
         }
-        private int GetDegreeFromJson()
+        private int GetTemperatureFromJson()
         {
             var stringData = GetStringFromAPI("zpgwT838A140y38YpeguHHToGCfRVfxC");
-            var definition = new { DailyForecasts = new[] { new { Temperature = new { Minimum = new { Value = "" } } } } };
+            var definition = new { DailyForecasts = new[] { new {
+                Temperature = new {
+                Minimum = new { Value = "" } ,
+                Maximum = new {Value = ""}} } } };
             var obj = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(stringData, definition);
             string value = obj.DailyForecasts[1].Temperature.Minimum.Value;
             var resStr = value.Split('.')[0];
-            return ConvertCelsiusToForengeyt(int.Parse(resStr));
+            return ConvertForengeytToCelsius(int.Parse(resStr));
         }
     }
 }

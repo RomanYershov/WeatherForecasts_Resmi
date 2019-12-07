@@ -8,7 +8,7 @@
         <h2>Результаты предсказаний на @DateTime.Now.AddDays(1).ToShortDateString()</h2>
     </div>
     <div class="alert alert-dark" style="text-align: center">
-        <h3 class="text-info">Ожидаемая темпеатура воздуха @ViewData["degree"] °C</h3>
+        <h3 class="text-info">Ожидаемая температура воздуха @ViewData["temperature"] °C</h3>
     </div>
     <table class="table table-striped">
         <thead>
@@ -16,6 +16,7 @@
                 <td>№</td>
                 <td>Имя</td>
                 <td>Температура</td>
+                <td>Дата</td>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +27,9 @@
                     <tr>
                         <td>@(++i)</td>
                         <td>@item.PlayerName</td>
-                        <td>@item.Degree</td></tr>
+                        <td>@item.Degree</td>
+                        <td>@item.DateTime</td>
+                    </tr>
                 }
             }
         </tbody>

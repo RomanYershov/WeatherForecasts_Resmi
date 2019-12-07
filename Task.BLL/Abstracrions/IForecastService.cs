@@ -5,7 +5,7 @@ namespace Task.BLL.Abstracrions
 {
     public interface IForecastService : IServices<ForecastModel>
     {
-        int Degree { get; } 
+        int Temperature { get; } 
         void Add(ForecastModel model);
     }
 }

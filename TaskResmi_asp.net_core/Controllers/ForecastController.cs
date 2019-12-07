@@ -40,7 +40,7 @@ namespace TaskResmi_asp.net_core.Controllers
         public IActionResult ForecastList()
         {
             var forecastList = _service.Get().ToList();
-            ViewData.Add("degree", _service.Degree);
+            ViewData.Add("temperature", _service.Temperature);
             return View("ForecastList", forecastList);
         }
     }
